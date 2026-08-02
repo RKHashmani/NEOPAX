@@ -229,7 +229,7 @@ class DummyFDSpecies:
     names = ("e", "i")
 
 
-class DummyFDGeometry:
+class DummyFDFourPointGeometry:
     def __init__(self):
         self.r_grid_half = jnp.array([0.0, 0.25, 0.5, 0.75, 1.0])
         self.r_grid = jnp.array([0.125, 0.375, 0.625, 0.875])
@@ -270,7 +270,7 @@ def test_fd_lagged_response_rejects_a_flux_file_off_the_geometry_grid(tmp_path):
         with pytest.raises(ValueError, match="match NEOPAX geometry"):
             build_fluxes_r_file_transport_model(
                 DummyFDSpecies(),
-                DummyFDGeometry(),
+                DummyFDFourPointGeometry(),
                 fluxes_file=path,
                 grid_location="cell_centered",
                 lagged_response_mode="fd",
@@ -278,7 +278,7 @@ def test_fd_lagged_response_rejects_a_flux_file_off_the_geometry_grid(tmp_path):
 
 
 def test_fd_lagged_response_builds_under_jit(tmp_path):
-    geometry = DummyFDGeometry()
+    geometry = DummyFDFourPointGeometry()
     path = tmp_path / "fd_fluxes.h5"
     _write_fd_flux_file(path, r=geometry.r_grid)
 
